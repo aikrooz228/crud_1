@@ -49,3 +49,10 @@ def edit_drink(id):
     cursor.execute("SELECT * FROM drinks WHERE id=%s", (id,))
     drink = cursor.fetchone()
     return render_template('edit.html', drink=drink)
+
+
+@app.route('/delete/<int:id>')
+def delete_drink(id):
+    cursor.execute("DELETE FROM drinks WHERE id=%s", (id,))
+    db.commit()
+    return redirect('/')
