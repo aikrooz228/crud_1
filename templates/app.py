@@ -21,3 +21,16 @@ def index():
         cursor.execute("SELECT * FROM drinks")
     drinks = cursor.fetchall()
     return render_template('index.html', drinks=drinks)
+
+@app.route('/add', methods=['GET', 'POST'])
+def add_drink():
+    if request.method == 'POST':
+        name = request.form['name']
+        brand = request.form['brand']
+        quantity = request.form['quantity']
+        price = request.form['price']
+        cursor.execute("INSERT INTO drinks (name, brand, quantity, price) VALUES (%s, %s, %s, %s)", 
+                       (name, brand, quantity, price))
+        db.commit()
+        return redirect('/')
+    return render_template('add.html')
