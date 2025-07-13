@@ -34,3 +34,18 @@ def add_drink():
         db.commit()
         return redirect('/')
     return render_template('add.html')
+
+@app.route('/edit/<int:id>', methods=['GET', 'POST'])
+def edit_drink(id):
+    if request.method == 'POST':
+        name = request.form['name']
+        brand = request.form['brand']
+        quantity = request.form['quantity']
+        price = request.form['price']
+        cursor.execute("UPDATE drinks SET name=%s, brand=%s, quantity=%s, price=%s WHERE id=%s", 
+                       (name, brand, quantity, price, id))
+        db.commit()
+        return redirect('/')
+    cursor.execute("SELECT * FROM drinks WHERE id=%s", (id,))
+    drink = cursor.fetchone()
+    return render_template('edit.html', drink=drink)
